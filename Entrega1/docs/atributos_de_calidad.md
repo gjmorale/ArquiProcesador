@@ -1,1 +1,8 @@
 #Atributos de calidad
+El sistema a desarrollar debe presentar buenas calificaciones en los siguientes atributos de calidad, en orden decreciente de importancia:
+* **Usabilidad**: la aplicación debe ser capaz de ser utilizada por un usuario, de manera que pueda ir interactuando con los distintos registros, agregar distintas fuentes de datos, etc. Particularmente, debe ser fácil para una persona leer las noticias en la aplicación y también seleccionar nuevas fuentes de información conforme lo desee. Por otro lado, se deben poder buscar noticias y ver las relaciones entre algunas de ellas.
+* **Integración**: no debe ser grande el esfuerzo requerido para integrar a la aplicación en un contexto mayor. En ese sentido, no solo debe ofrecer una API REST para exponer funcionalidades a otros sistemas, sino que también debe consumir datos de otras fuentes que pueden venir en distintos formatos.
+* **Desempeño**: debe ser capaz de realizar alta carga de trabajo, en este caso accesos a bases de datos, al realizar búsquedas avanzadas sobre noticias o bien relacionarlas entre sí según criterios dados. Para esto debe asegurar niveles decentes de _throughput_ (_peak_ y promedio), y tiempos de latencia bajos.
+* **Disponibilidad**: el porcentaje de tiempo en el que la aplicación sea posible de usar debe ser alto. La interfaz gráfica no debe verse afectada por el procesamiento de datos ocurriendo en el _backend_, lo que sugiere una serie de decisiones arquitectónicas que serán especificadas más adelante.
+* **Escalabilidad**: la aplicación debe soportar una alta carga de usuarios que la visiten.
+* **Flexibilidad**: ante un posible cambio en los requerimientos, el esfuerzo necesario para realizar cambios debe ser bajo.
