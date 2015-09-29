@@ -5,5 +5,36 @@ from cassandra.cluster import Cluster
 
 from RSSFeed import la_tercera_reader
 
-d = la_tercera_reader(0)
-print(d)
+authenticate("localhost:7474", "neo4j", "admin")
+feeds = [(la_tercera_reader, "La Tercera")]
+
+for feed in feeds:
+    news = feed[0]()
+
+    graph_media = Graph()
+    media_query = ('match (n) where n.name = "' +
+                str(feed[1]) + '" return n')
+    media = graph_media.cypher.execute(media_query)
+    media_node = media[0][0]
+
+    #Save to Databases.
+    for new_link in news.keys():
+        #Neo4j Nodes.
+        new = news[new_link]
+        new_node = Node("New", name = new_link)
+        title_node = Node("Title", name = new['title'])
+        date_node = Node("Date", name = new['pubDate'])
+
+        #Neo4j Relationships.
+        title_relation = Relationship(new_node, "title", title_node)
+        was_created_relation = Relationship(new_node, "was_created", date_node)
+
+        media_relation = Relationship(media_node, "has_new", new_node)
+
+        print(new_link)
+        print(new['title'])
+        print(new['pubDate'])
+
+        graph_media.create(title_relation)
+        graph_media.create(was_created_relation)
+        graph_media.create(media_relation)
