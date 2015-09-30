@@ -25,8 +25,11 @@ def la_tercera_reader():
         article_content = (soup.findAll('div',
                                 {'class': 'article-center-text'}))[0]
         content = article_content.findAll('p')
+        content_string = ""
+        for p in content:
+            content_string += str(p)
         news[link] = {'link': link,
                     'title': title,
                     'pubDate': pubDate,
-                    'content': content}
+                    'content': content_string}
     return news

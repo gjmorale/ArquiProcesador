@@ -38,3 +38,8 @@ for feed in feeds:
         graph_media.create(title_relation)
         graph_media.create(was_created_relation)
         graph_media.create(media_relation)
+
+        cluster = Cluster()
+        session = cluster.connect('rss')
+        session.execute("INSERT INTO news (id, content) VALUES (%s, %s);",
+                        (new_link, new['content']))
