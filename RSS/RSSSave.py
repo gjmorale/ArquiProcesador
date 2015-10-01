@@ -24,10 +24,12 @@ for feed in feeds:
         new_node = Node("New", name = new_link)
         title_node = Node("Title", name = new['title'])
         date_node = Node("Date", name = new['pubDate'])
+        category_node = Node("Category", name = new['category'])
 
         #Neo4j Relationships.
         title_relation = Relationship(new_node, "title", title_node)
         was_created_relation = Relationship(new_node, "was_created", date_node)
+        category_relation = Relationship(new_node, "category", category_node)
 
         media_relation = Relationship(media_node, "has_new", new_node)
 
@@ -38,6 +40,7 @@ for feed in feeds:
         graph_media.create(title_relation)
         graph_media.create(was_created_relation)
         graph_media.create(media_relation)
+        graph_media.create(category_relation)
 
         cluster = Cluster()
         session = cluster.connect('rss')

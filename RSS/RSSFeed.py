@@ -22,6 +22,11 @@ def la_tercera_reader():
         except:
             print('Error Inesperado')
         soup = BeautifulSoup(html_content, 'html.parser')
+        try:
+            category = (soup.findAll('a',
+                                    {'class': 'section-title'}))[0].text
+        except:
+            category = "Otro"
         article_content = (soup.findAll('div',
                                 {'class': 'article-center-text'}))[0]
         content = article_content.findAll('p')
@@ -31,5 +36,6 @@ def la_tercera_reader():
         news[link] = {'link': link,
                     'title': title,
                     'pubDate': pubDate,
-                    'content': content_string}
+                    'content': content_string,
+                    'category': category}
     return news
