@@ -2,9 +2,66 @@ from bs4 import BeautifulSoup
 import feedparser
 import requests
 import urllib
+import json
 
-#This class contains all the readers of RSS
+def reader(feed_url, class_keyword):
+    # feed_url      % URL con el cual se obtiene la noticia.
+    # class_keyword % *keyword* del DOM para encontrar el cuerpo de la noticia.
 
+    fdict = feedparser.parse(feed_url)
+
+    # nota: *fdict* es un diccionario.
+    # ===== ==========================
+    # print(fdict.keys()) aquí están los elementos disponibles.
+    # sin embargo, los más importantes son: *feed* y *entries*.
+    # - *feed* es un diccionario de metadatos.
+    # - *entries* es una lista de noticias.
+
+    news = {} # diccionario donde se almacenarán las noticias.
+    feed = fdict.feed
+    print("Título:", feed.title)
+    print("Descripción:", feed.description)
+
+    entries = fdict.entries
+    for entry in entries:
+        print()
+        print(entry.id)            # enlace (que será usado por *requests*)
+        print(entry.title)         # título
+        print(entry.summary)       # resumen
+        print(entry.published)     # fecha de publicación
+        # print(entry.description) # lo mismo que *summary*
+
+        link = entry.id
+        title = entry.title
+        pub_date = entry.published
+        try:
+            r = requests.get(entry.id)
+            soup = BeautifulSoup(r.content, 'html.parser')
+            news_body = soup.find('div', class_=class_keyword)
+            article_text = news_body(['p', 'h1', 'h2'])
+            news[link] = {'link': link,
+                          'title': title,
+                          'pubDate': pub_date,
+                          'content': article_text,
+                          'category': 'None'} # categoría interina.
+        except:
+            print('Error inesperado.')
+
+    # print(news)
+    return news
+
+def load_sources(filename):
+    # *filename* % nombre del archivo con los *feeds*.
+
+    with open(filename) as src_file:
+        sources = json.load(src_file)
+        for source in sources:
+            # print(source.keys())
+            for topic in source['topic-list']:
+                # forma el URL del RSS.
+                feed_url = source['beg-url'] + topic + source['end-url']
+                # print(feed_url)
+                reader(feed_url, source['keyword'])
 
 def la_tercera_reader():
     #This method reads news from La Tercera.
@@ -41,102 +98,4 @@ def la_tercera_reader():
                     'category': category}
     return news
 
-import requests
-
-# fix: juntar todo el código duplicado.
-#      pido perdón por este *code smell*.
-# *topic* puede ser '', '/world', '/politics', entre otros.
-def bbc_reader(id_start, topic):
-    feed_url = "http://feeds.bbci.co.uk/news" + topic + "/rss.xml"
-    fdict = feedparser.parse(feed_url)
-
-    # nota: *fdict* es un diccionario.
-    # ===== ==========================
-    # print(fdict.keys()) aquí están los elementos disponibles.
-    # sin embargo, los más importantes son: *feed* y *entries*.
-    # - *feed* es un diccionario de metadatos.
-    # - *entries* es una lista de noticias.
-
-    new_id = id_start
-    news = {} # diccionario donde se almacenarán las noticias.
-    feed = fdict.feed
-    print("Título:", feed.title)
-    print("Descripción:", feed.description)
-
-    entries = fdict.entries
-    for entry in entries:
-        print(entry.id)            # enlace (que será usado por *requests*)
-        print(entry.title)         # título
-        print(entry.summary)       # resumen
-        print(entry.published)     # fecha de publicación
-        # print(entry.description) # lo mismo que *summary*
-
-        link = entry.id
-        title = entry.title
-        pub_date = entry.published
-        try:
-            r = requests.get(entry.id)
-            soup = BeautifulSoup(r.content, 'html.parser')
-            story_body = soup.find('div', class_='story-body')
-            article_text = story_body(['p', 'h1', 'h2'])
-            news[new_id] = {'link': link,
-                            'title': title,
-                            'pubDate': pub_date,
-                            'content': article_text}
-        except:
-            print('Error Inesperado')
-
-        new_id += 1
-    # print(news)
-    return news
-
-# bbc_reader(0, '')
-
-# the guardian.
-# *topic* puede ser '', '/football', '/football/liverpool', entre otros.
-def tgd_reader(id_start, topic):
-    feed_url = "http://www.theguardian.com" + topic + "/rss"
-    fdict = feedparser.parse(feed_url)
-
-    # nota: *fdict* es un diccionario.
-    # ===== ==========================
-    # print(fdict.keys()) aquí están los elementos disponibles.
-    # sin embargo, los más importantes son: *feed* y *entries*.
-    # - *feed* es un diccionario de metadatos.
-    # - *entries* es una lista de noticias.
-
-    new_id = id_start
-    news = {} # diccionario donde se almacenarán las noticias.
-    feed = fdict.feed
-    print("Título:", feed.title)
-    print("Descripción:", feed.description)
-
-    entries = fdict.entries
-    for entry in entries:
-        print(entry.id)            # enlace (que será usado por *requests*)
-        print(entry.title)         # título
-        print(entry.summary)       # resumen
-        print(entry.published)     # fecha de publicación
-        # print(entry.description) # lo mismo que *summary*
-
-        link = entry.id
-        title = entry.title
-        pub_date = entry.published
-        try:
-            r = requests.get(entry.id)
-            soup = BeautifulSoup(r.content, 'html.parser')
-            story_body = soup.find('div', class_='content__article-body')
-            article_text = story_body(['p', 'h1', 'h2'])
-            news[new_id] = {'link': link,
-                            'title': title,
-                            'pubDate': pub_date,
-                            'content': article_text}
-            print(news)
-        except:
-            print('Error Inesperado')
-
-        new_id += 1
-    # print(news)
-    return news
-
-# tgd_reader(0, '/football/liverpool')
+load_sources('sources.json')

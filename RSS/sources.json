@@ -1,0 +1,46 @@
+[
+  {
+    "id":      "BBC",
+    "name":    "British Broadcasting Corporation",
+    "beg-url": "http://feeds.bbci.co.uk/news",
+    "end-url": "/rss.xml",
+    "keyword": "story-body",
+    "topic-list"  : [
+      "",
+      "/world",
+      "/techonology",
+      "/business",
+      "/politics",
+      "/health"
+    ]
+  },
+  {
+    "id":      "TGD",
+    "name":    "The Guardian",
+    "beg-url": "http://www.theguardian.com",
+    "end-url": "/rss",
+    "keyword": "content__article-body",
+    "topic-list": [
+      "/world",
+      "/techonology",
+      "/business",
+      "/football",
+      "/football/liverpool",
+      "/culture"
+    ]
+  },
+  {
+    "id":      "L3A",
+    "name":    "La Tercera",
+    "beg-url": "http://www.latercera.com/feed/manager?type=rss&sc=TEFURVJDRVJB",
+    "end-url": "",
+    "keyword": "article-center-text",
+    "topic-list": [
+      "&categoryId=680",
+      "&categoryId=678",
+      "&categoryId=674",
+      "&categoryId=656",
+      "&categoryId=655"
+    ]
+  }
+]
