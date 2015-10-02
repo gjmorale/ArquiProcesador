@@ -3,7 +3,6 @@ import re
 people = []
 places = []
 events = []
-tags = {}
 
 #TODO: extend people and places list
 people.extend(["Michelle Bachelet",
@@ -44,17 +43,17 @@ def find_similar (news, person):
 	else:
 		return news.find(person)
 
-def people_filter (news):
+def people_filter (news, tags):
 	for person in people:
 		if find_similar(news, person) != -1:
 			tags[person] = "Personaje"
 
-def places_filter (news):
+def places_filter (news, tags):
 	for place in places:
 		if news.find(place) != -1:
 			tags[place] = "Lugar"
 
-def events_filter (news):
+def events_filter (news, tags):
 	#TODO: more sophisticated approach (keywords with RAKE algorithm? clustering?)
 	for event in events:
 		if news.find(event) != -1:
@@ -62,9 +61,10 @@ def events_filter (news):
 
 def filter (news):
 	#Applies all filters
-	people_filter(news)
-	places_filter(news)
-	events_filter(news)
+	tags = {}
+	people_filter(news, tags)
+	places_filter(news, tags)
+	events_filter(news, tags)
 	return tags
 
 #test = "M. Bachelet y Barack James Obama ademas tambien homicidio de alguien en Chile o quizas China"
