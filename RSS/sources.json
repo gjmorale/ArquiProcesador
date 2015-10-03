@@ -5,10 +5,10 @@
     "beg-url": "http://feeds.bbci.co.uk/news",
     "end-url": "/rss.xml",
     "keyword": "story-body",
-    "topic-list"  : [
+    "topic-list": [
       "",
       "/world",
-      "/techonology",
+      "/technology",
       "/business",
       "/politics",
       "/health"
@@ -22,7 +22,7 @@
     "keyword": "content__article-body",
     "topic-list": [
       "/world",
-      "/techonology",
+      "/technology",
       "/business",
       "/football",
       "/football/liverpool",
