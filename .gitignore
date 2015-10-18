@@ -1,0 +1,5 @@
+# archivos de Python
+__pycache__/
+
+# otros archivos
+.DS_Store
