@@ -98,4 +98,40 @@ def la_tercera_reader():
                     'category': category}
     return news
 
+def emol_link_reader(self, link):
+    #This method reads news from Emol.
+
+    # Formato link emol:
+    # Header: http://www.emol.com/noticias/
+    # Categoria: Espectaculos/
+    # Fecha+Titulo: 2015/10/20/755206/ausencia-de-luke-skywalker-en-trailer-y-afiche-de-star-wars.html
+    #
+    # Como no es RSS no hay suscripción directa a feeds pero si existe una opción de recibir noticias al e-mail que se puede explorar
+    #
+    #link = 'http://www.emol.com/noticias/Espectaculos/2015/10/20/755206/ausencia-de-luke-skywalker-en-trailer-y-afiche-de-star-wars.html'
+
+    try:
+        html_content = urllib.request.urlopen(link).read()
+    except:
+        print('Error Inesperado')
+
+        
+    soup = BeautifulSoup(html_content, 'html.parser')
+
+    title = (soup.find(id='cuDetalle_cuTitular_tituloNoticia')).text
+    dropTitle = (soup.find(id='cuDetalle_cuTitular_bajadaNoticia')).text
+    pubDate = (soup.find(id='cuDetalle_cuCreditos_fecha')).text
+    try:
+        category = (soup.find(id='cuDetalle_cuNavegador_txtseccion')).text
+    except:
+        category = "Otro"
+    article_content = (soup.find(id='cuDetalle_cuTexto_textoNoticia')).text
+    news[link] = {'link': link,
+                'title': title,
+                #'dropTitle' : dropTitle,
+                'pubDate': pubDate,
+                'content': article_content,
+                'category': category}
+    return news
+
 load_sources('sources.json')
