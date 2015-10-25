@@ -2,6 +2,7 @@
   {
     "id":      "BBC",
     "name":    "British Broadcasting Corporation",
+    "lang":    "english",
     "beg-url": "http://feeds.bbci.co.uk/news",
     "end-url": "/rss.xml",
     "keyword": "story-body",
@@ -17,6 +18,7 @@
   {
     "id":      "TGD",
     "name":    "The Guardian",
+    "lang":    "english",
     "beg-url": "http://www.theguardian.com",
     "end-url": "/rss",
     "keyword": "content__article-body",
@@ -32,6 +34,7 @@
   {
     "id":      "L3A",
     "name":    "La Tercera",
+    "lang":    "spanish",
     "beg-url": "http://www.latercera.com/feed/manager?type=rss&sc=TEFURVJDRVJB",
     "end-url": "",
     "keyword": "article-center-text",
