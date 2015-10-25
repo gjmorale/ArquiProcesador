@@ -23,16 +23,17 @@ Este subcomponente está encargado del procesamiento de las noticias entregadas 
 Las librerías utilizadas están resumidas en la siguiente tabla.
 
 | Nombre           | ¿Y para qué?                             | Versión    |
-| ---------------- | ---------------------------------------- | ----------:|
+| ---------------- | ---------------------------------------- | ---------- |
 | [beautifulsoup4] | Para hacer *parsing* de documentos HTML. | **4.4.0**  |
 | [feedparser]     | Para obtener noticias de fuentes RSS.    | **5.2.1**  |
 | [nltk]           | Para analizar lenguaje natural.          | **3.1.0**  |
+| [pika]           | Para implementar colas de noticias.      | **0.10.0** |
 | [requests]       | Para hacer solicitudes HTTP.             | **2.7.0**  |
 
 Todas ellas aparecen, además, en el archivo `requirements.txt`. Luego, se **debe** usar este archivo para instalarlas con `pip`. Esto permite que tengamos las mismas versiones al momento de trabajar, consiguiendo instalaciones **replicables**, sin hacer esfuerzo. Bueno, un poco: debemos escribir
 
 ```sh
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 En efecto, esto es... *as easy as __py__*. :grinning:
@@ -55,7 +56,7 @@ La estructura del repositorio está resumida en las siguientes tablas.
 | `NewsProcessor` | Procesamiento de las noticias. |
 
 ## Manual de estilo
-No hay sorpresas: intentaremos seguir el [PEP8], amigo lector. No obstante, aun más importante, es que trataremos de incorporar el [PEP20] —también conocido como *The Zen of Python*. En este texto, el séptimo principio sucintamente afirma: *__readability counts__*. No olvidemos que el código será leído muchas más veces que escrito. Por esto, nuestro [benevolente pastor](https://en.wikipedia.org/wiki/Guido_van_Rossum), nos orienta al declarar que...
+Aquí no hay sorpresas: intentaremos seguir el [PEP8], amigo lector. No obstante, aun más importante, es que trataremos de incorporar el [PEP20] —también conocido como *The Zen of Python*. En este texto, el séptimo principio sucintamente afirma: *__readability counts__*. No olvidemos que el código será leído muchas más veces que escrito. Por esto, nuestro [benevolente pastor](https://en.wikipedia.org/wiki/Guido_van_Rossum), nos orienta al declarar que...
 
 > *A style guide is about consistency.<br>
 Consistency with this style guide is important.<br>
@@ -70,6 +71,7 @@ En otras palabras, estas normas no deben ser aplicadas *ciegamente*. Si bien el 
 [beautifulsoup4]: https://pypi.python.org/pypi/beautifulsoup4
 [feedparser]:     https://pypi.python.org/pypi/feedparser
 [nltk]:           https://pypi.python.org/pypi/nltk
+[pika]:           https://pypi.python.org/pypi/pika
 [requests]:       https://pypi.python.org/pypi/requests
 
 [pep8]:  https://www.python.org/dev/peps/pep-0008
