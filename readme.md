@@ -7,7 +7,7 @@ Este aburrido archivo `readme` habla sobre
 * [manual de estilo](#manual-de-estilo).
 
 ## Descripción
-Este componente de :dolphin: se puede subdividir, *grosso modo*, en **dos** fases: primero, *NewsMiner* obtiene y limpia las noticias desde las fuentes; luego, *NewsProcessor* se desarrolla un análisis sobre ellas. Entonces, para cada etapa, hemos definido un subcomponente.
+Este componente de :dolphin: se puede subdividir, *grosso modo*, en **dos** fases: primero, *NewsMiner* obtiene, limpia y estructura las noticias; luego, con *NewsProcessor*, se desarrolla un análisis sobre ellas. Entonces, para cada etapa, hemos definido un subcomponente.
 
 ### *NewsMiner*
 Este subcomponente busca noticias tanto en fuentes que funcionen con RSS/Atom, como en otro tipo de noticieros —algo arcaicos, probablemente— que no ofrezcan ningún tipo de [sindicación](https://en.wikipedia.org/wiki/Web_syndication). Después de encontrar las noticias, devuelve esta información de manera organizada.
@@ -26,11 +26,14 @@ Las librerías utilizadas están resumidas en la siguiente tabla.
 | ---------------- | ---------------------------------------- | ----------:|
 | [beautifulsoup4] | Para hacer *parsing* de documentos HTML. | **4.4.0**  |
 | [feedparser]     | Para obtener noticias de fuentes RSS.    | **5.2.1**  |
+| [nltk]           | Para analizar lenguaje natural.          | **3.1.0**  |
 | [requests]       | Para hacer solicitudes HTTP.             | **2.7.0**  |
 
-Todas ellas aparecen en el archivo `requirements.txt`. Por lo tanto, este archivo **debe** ser usado para instalarlas con `pip`. Esto se logra con
+Todas ellas aparecen, además, en el archivo `requirements.txt`. Luego, se **debe** usar este archivo para instalarlas con `pip`. Esto permite que tengamos las mismas versiones al momento de trabajar, consiguiendo instalaciones **replicables**, sin hacer esfuerzo. Bueno, un poco: debemos escribir
 
-`pip install -r requirements.txt`
+```sh
+pip install -r requirements.txt
+```
 
 En efecto, esto es... *as easy as __py__*. :grinning:
 
@@ -52,19 +55,22 @@ La estructura del repositorio está resumida en las siguientes tablas.
 | `NewsProcessor` | Procesamiento de las noticias. |
 
 ## Manual de estilo
-Aquí no hay sorpresas: intentaremos seguir el [PEP8]. No obstante, más importante que esto, es tener en cuenta el [PEP20] —también conocido como *The Zen of Python*. El séptimo principio afirma: *readability counts*. Por esto, [Guido], nuestro benevolente pastor, nos orienta al declarar que...
+No hay sorpresas: intentaremos seguir el [PEP8], amigo lector. No obstante, aun más importante, es que trataremos de incorporar el [PEP20] —también conocido como *The Zen of Python*. En este texto, el séptimo principio sucintamente afirma: *__readability counts__*. No olvidemos que el código será leído muchas más veces que escrito. Por esto, nuestro [benevolente pastor](https://en.wikipedia.org/wiki/Guido_van_Rossum), nos orienta al declarar que...
 
-> *A style guide is about consistency. Consistency with this style guide is important. Consistency within a project is more important. Consistency within one module or function is most important.*
+> *A style guide is about consistency.<br>
+Consistency with this style guide is important.<br>
+Consistency within a project is more important.<br>
+Consistency within one module or function is most important.*
 
-> *But most importantly: know when to be inconsistent — sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best.*
+> *But most importantly: know when to be inconsistent -- sometimes the style guide just doesn't apply. When in doubt, use your best judgment. Look at other examples and decide what looks best.*
 
-En otras palabras, como el código será leído muchas más veces que escrito, estas reglas no deben ser aplicadas ciegamente. PEP8 nos ayuda, pero siempre debemos emplear nuestro criterio.
+En otras palabras, estas normas no deben ser aplicadas *ciegamente*. Si bien el PEP8 nos encamina, también tendremos que usar nuestro criterio.
 
 [python]:         http://www.pyzo.org/_images/xkcd_python.png
 [beautifulsoup4]: https://pypi.python.org/pypi/beautifulsoup4
 [feedparser]:     https://pypi.python.org/pypi/feedparser
+[nltk]:           https://pypi.python.org/pypi/nltk
 [requests]:       https://pypi.python.org/pypi/requests
 
 [pep8]:  https://www.python.org/dev/peps/pep-0008
 [pep20]: https://www.python.org/dev/peps/pep-0020
-[guido]: https://en.wikipedia.org/wiki/Guido_van_Rossum
