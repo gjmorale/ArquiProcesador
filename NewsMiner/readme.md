@@ -30,6 +30,7 @@ Es fácil notar que lo único que cambia es la categoría, situada al medio del 
 {
   "id":      "BBC",
   "name":    "British Broadcasting Corporation",
+  "lang":    "english",
   "beg-url": "http://feeds.bbci.co.uk/news",
   "end-url": "/rss.xml",
   "keyword": "story-body",

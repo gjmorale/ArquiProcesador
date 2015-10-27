@@ -3,65 +3,102 @@ import feedparser
 import requests
 import urllib
 import json
+import pprint
+import dolphinq
 
-def reader(feed_url, class_keyword):
-    # feed_url      % URL con el cual se obtiene la noticia.
-    # class_keyword % *keyword* del DOM para encontrar el cuerpo de la noticia.
+def _feed_reader(feed_url):
+    # feed_url % URL con el cual se obtiene el *feed*.
 
     fdict = feedparser.parse(feed_url)
+    news_list = [] # lista con todas las noticias del *feed*.
 
     # nota: *fdict* es un diccionario.
     # ===== ==========================
     # print(fdict.keys()) aquí están los elementos disponibles.
     # sin embargo, los más importantes son: *feed* y *entries*.
-    # - *feed* es un diccionario de metadatos.
+    # - *feed*    es un diccionario de metadatos.
     # - *entries* es una lista de noticias.
 
-    news = {} # diccionario donde se almacenarán las noticias.
     feed = fdict.feed
     print("Título:", feed.title)
     print("Descripción:", feed.description)
-
+    # ahora, desde cada noticia del *feed*,
+    # se rescata lo más importante: *link*, *title*, *date*.
     entries = fdict.entries
     for entry in entries:
+        news = {}
+        news['link']  = entry.id         # enlace
+        news['title'] = entry.title      # título
+        news['date']  = entry.published  # fecha de publicación
+        news_list.append(news)
+
+    return news_list
+
+def _news_reader(news_url, class_keyword):
+    # news_url      % URL con el cual se obtiene la noticia.
+    # class_keyword % *keyword* del DOM para encontrar el cuerpo de la noticia.
+
+    try:
+        # genera una solicitud GET.
+        rget = requests.get(news_url)
+        soup = BeautifulSoup(rget.content, 'html.parser')
+        body = soup.find('div', class_=class_keyword)
+        news_content = body(['p', 'h1', 'h2'])
+        return str(news_content)
+    # si algo no funciona...
+    except Exception as err:
         print()
-        print(entry.id)            # enlace (que será usado por *requests*)
-        print(entry.title)         # título
-        print(entry.summary)       # resumen
-        print(entry.published)     # fecha de publicación
-        # print(entry.description) # lo mismo que *summary*
+        print("# #################")
+        print("# Error inesperado.")
+        print("# URL:", news_url)
+        print("# ERR:", err)
+        print()
 
-        link = entry.id
-        title = entry.title
-        pub_date = entry.published
-        try:
-            r = requests.get(entry.id)
-            soup = BeautifulSoup(r.content, 'html.parser')
-            news_body = soup.find('div', class_=class_keyword)
-            article_text = news_body(['p', 'h1', 'h2'])
-            news[link] = {'link': link,
-                          'title': title,
-                          'pubDate': pub_date,
-                          'content': article_text,
-                          'category': 'None'} # categoría interina.
-        except:
-            print('Error inesperado.')
+def builder(filename):
+    # filename % nombre del archivo con los *feeds*.
 
-    # print(news)
-    return news
+    # #######################################################
+    # Este método busca aprovechar el diccionario subyacente,
+    # que se obtiene a partir del archivo JSON.
+    # Luego, sólo se debe agregar las noticias,
+    # que serían los datos faltantes.
+    # ###############################
 
-def load_sources(filename):
-    # *filename* % nombre del archivo con los *feeds*.
+    # obtiene todos los *sources* a partir del archivo.
+    with open(filename) as srcfile:
+        all_sources = [source for source in json.load(srcfile)]
 
-    with open(filename) as src_file:
-        sources = json.load(src_file)
-        for source in sources:
-            # print(source.keys())
-            for topic in source['topic-list']:
-                # forma el URL del RSS.
-                feed_url = source['beg-url'] + topic + source['end-url']
-                # print(feed_url)
-                reader(feed_url, source['keyword'])
+    # herramienta para imprimir largos diccionarios.
+    pp = pprint.PrettyPrinter(width=120)
+    pp.pprint(all_sources)
+
+    for source in all_sources:
+        for topic in source['topic-list'][:]:
+            # forma el URL del *feed*.
+            feed_url = source['beg-url'] + topic + source['end-url']
+            news_list = _feed_reader(feed_url)
+
+            # agrupa el tema con la lista asociada de noticias;
+            # luego, lo reemplaza por el tema que viene vacío.
+            ndict = {topic: news_list}
+            index = source['topic-list'].index(topic)
+            source['topic-list'][index] = ndict
+            for news in news_list:
+                # agrega el contenido de cada noticia.
+                news['content'] = _news_reader(news['link'], source['keyword'])
+                print(news['title'])
+                # pp.pprint(all_sources)
+                # input("Presione ENTER para continuar.\n")
+
+        # elimina las llaves innecesarias.
+        source.pop('id')
+        source.pop('beg-url')
+        source.pop('end-url')
+        source.pop('keyword')
+        # finalmente, encola las noticias de este *source*.
+        dolphinq.enqueue(source)
+
+# builder('sources.json')
 
 def la_tercera_reader():
     #This method reads news from La Tercera.
@@ -97,5 +134,3 @@ def la_tercera_reader():
                     'content': content_string,
                     'category': category}
     return news
-
-load_sources('sources.json')
