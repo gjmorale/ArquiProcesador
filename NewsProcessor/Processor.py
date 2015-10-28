@@ -1,4 +1,5 @@
-import nltk, re, unicodedata
+
+import nltk, re, unicodedata, requests, json
 from nltk.corpus import wordnet as wn
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords as sw
@@ -93,12 +94,15 @@ def rm_accents(s):
    	return ''.join(c for c in unicodedata.normalize('NFD', s)
                   if unicodedata.category(c) != 'Mn')
 
-def people_filter (news, tags):
+def people_filter (news):
+	p_tags = []
 	for person in people:
 		if find_similar(news, person):
-			tags[person] = "Personaje"
+			p_tags.append(person)
+	return p_tags
 
-def places_filter (news, tags):
+def places_filter (news):
+	pl_tags = []
 	for pair in places.items():
 		start = news.find(rm_accents(pair[0]), 0)
 		while start != -1:
@@ -106,14 +110,17 @@ def places_filter (news, tags):
 			#Done by checking if next character is not alphabetic.
 			if not news[start + len(pair[0])].isalpha():
 				#Save value of key-value pair.
-				tags[pair[1]] = "Lugar"
+				pl_tags.append(pair[1])
 				break
 			start = news.find(rm_accents(pair[0]), start + len(pair[0]))
+	return pl_tags
 
 def events_filter (title, lang, tags):
 	#Cleans, tokenizes and lemmatizes news title to save keyowrds.
 	#This way, words are saved in their dictionary form.
 	#With this we have a standard way of representing an event.
+
+	f_tags = []
 
 	#Regex adapted from nltk documentation
 	pattern = (r"(?x)"      # set flag to allow verbose regexps
@@ -155,56 +162,70 @@ def events_filter (title, lang, tags):
 				tokens[i] = sp_lemmas[tokens[i]]
 			#else: word not in dictionary, save token unchanged.
 	for tok in tokens:
-		tags[tok] = "Suceso"
+		f_tags.append(tok)
+	return f_tags
 
 def filter (news, title, lang):
 	#Applies all filters
-	#Problem with some unicode characters (\u201c) (??)
+	#Problem with some unicode characters (\u201c) (maybe??)
 	tags = {}
 
 	#Remove accents from news.
 	news = rm_accents(news)
 
 	#Apply filters
-	people_filter(news, tags)
-	places_filter(news, tags)
-	events_filter(title, lang, tags)
+	tags['people'] = people_filter(news)
+	tags['places'] = places_filter(news)
+	tags['facts'] = events_filter(title, lang)
 	return tags
 
-#Working examples for spanish and english.
+def http_post(data):
+	#TODO: get real url. 
+	url = "http://localhost:8000/dolphin_api/create_new/"
+	for i in range(1,4):
+		#Three chances to send a news
+		try:
+			r = requests.post(url, json = data, timeout = 1.0)
+			r.raise_for_status()
+			break
 
-s = """Un tenso momento se vivió hoy en la cita que reúne todas las semanas a las directivas del bloque opositor, bautizado hace dos semanas como Chile Vamos.
-	En el encuentro, los timoneles de la UDI, RN, el PRI y Evópoli discutieron sobre la elaboración del documento fundacional del conglomerado  que debe ser presentado el próximo 2 de noviembre, donde uno de los puntos que causó mayor diferencia fue la forma en que se se redactaría la posición del bloque frente al  aborto. 
-	Si bien en la UDI, RN y el PRI se mantuvo una postura única, que propone como punto común la defensa de la vida del que está por nacer, la colectividad liderada por el diputado Felipe Kast marcó diferencias, las que según asistentes a la reunión, despertaron duras críticas por parte de los demás presidententes de partido. 
-	Así, según indican desde la oposición, la idea de Evópoli era que el documento fundacional de Chile Vamos no hiciera alusión al aborto, dejando así una postura abierta respecto a la materia. 
-	La propuesta de Kast, que se basó en la apuesta de no perder apoyos en sectores liberales de oposicón, no alcanzó consenso, y por el contrario, provocó duros cuestionamientos. 
-	La presidenta del PRI, Alejandra Bravo, defendió la tesis de que el bloque debería contar con una postura cerrada en esta materia, advirtiendo que quienes no estuvieran por la búsqueda de principios comunes debiesen abandonar el bloque.
-	Si nosotros tenemos una posición, que es fundamental, y alguien no está de acuerdo, mejor que no pertenezca a este bloque, afirmó. 
-	Mientras el presidente de la UDI, el senador Hernán Larraín, reconoció las diferencias, advirtiendo que es propio de procesos en que las actuales coaliciones buscan ampliar sus miembros.
-	El secretario general del gremialismo,  Guillermo Ramírez, agregó: Hay tres partidos de los cuatro que en su declaración de principios contemplan la proteccion de la vida desde la concepción, y hay otro partido que no lo tiene así. Yo soy de la idea de proteger la vida del que está por nacer siempre. 
-	En tanto, sobre lo señalado por Felipe Kast durante el encuentro de Chile Vamos, miembros del bloque que asistieron a la reunión señalaron que éste habría reiterado su posición en contra del aborto, pero que habría advertido que resultaba un error no tener las puertas abiertas de la nueva coalición a quienes piensan distinto.
-	Tras ser consultado por La Tercera, el diputado Kast optó por no referirse al tema."""
+		except requests.exceptions.RequestException:
+			#General handling, for all request exceptions
+			#TODO: maybe keep an error queue?
+		
+if __name__ == '__main__':
+	#Here we recieve the dictionary from queue, filter and send each news individually.
 
-t = "Nuevo bloque opositor se divide por aborto y complica documento fundacional"
+	init_spanish_lemma_dict()
 
-init_spanish_lemma_dict()
-print (filter(s, t, "spanish"))
+	#TODO:Add dequeue from CloudAMQP, esto por ahora no funciona.
+	d = dolphinq.dequeue()
+	while d != None:
+		#Media level
+		post_content = {}
 
-t = "Pope Francis 'tumour': Vatican denies 'spot on brain' report"
+		#DB credentials
+		post_content['username'] = "admin_diego"
+		post_content['password'] = "admin_diego"
 
-s = """The Vatican has rejected as "seriously irresponsible" an Italian media report that says Pope Francis has a small but curable tumour on his brain.
-The Quotidiano newspaper said the Pope had travelled by helicopter to Tuscany to see a world-renowned Japanese brain surgeon.
-The Pope was diagnosed with a small, dark spot but did not need surgery, the paper said.
-A Vatican spokesman said the report was totally unfounded.
-"As everyone can see, the Pope is carrying out his extremely intense activities in an absolutely normal manner," Father Federico Lombardi said.
-Quotidiano insisted that its story was true, maintaining that the Pope had visited Prof Takanori Fukushima some months ago at the San Rossore clinic in the Barbaricina area of Pisa.
-It quoted an unnamed employee at the clinic saying such a small tumour could be treated and did not need any kind of surgical intervention.
-The paper's editor, Andrea Cangini, said the denial was understandable and had been expected. The timing of the report is seen as awkward for the Vatican, as 279 bishops from around the world approach the end of their three-week Synod on the Family.
-The meeting, which ends on Saturday, is considered one of the key tests of Pope Francis's papacy as it has wrestled with the Church's attitude towards same-sex unions, contraception and its refusal to allow divorced and remarried Catholics to take Communion.
-Earlier this year, Pope Francis, 78, indicated his papacy may last only a few years, and that he might retire like his predecessor Benedict XVI, who stepped down as pontiff in 2013.
-The Pope appeared before thousands of people in St Peter's Square as normal on Wednesday, and was due to return to the Synod later in the day."""
+		post_content['media'] = d['name']
+		lang = d['lang']
 
-print (filter(s, t, "english"))
+		for topic in d['topic-list']:
+			#Topic level
+			#Topic is a key value pair.
+			post_content['category'] = list(topic.keys())[0]
+			news_list = list(topic.values())
 
-#TODO: communicate with api.
-#TODO: recieve news from queue.
+			for news in news_list:
+				#Here we take one news.
+				post_content['title'] = news['title']
+				post_content['date'] = news['date']
+				post_content['nid'] = news['link']
+				post_content['content'] = news['content']
+
+				#Agregar tags del filtro
+				post_content.update(filter(news['content'], news['title'], lang))
+
+				http_post(post_content)
+		d = dolphinq.dequeue()
