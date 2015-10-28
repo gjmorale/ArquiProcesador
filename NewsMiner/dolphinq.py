@@ -36,6 +36,24 @@ def enqueue(message):
     print("Noticia puesta en cola.")
     conn.close()
 
+def single_dequeue():
+    # abre una nueva conexión.
+    conn = pika.BlockingConnection(params)
+    channel = conn.channel()
+
+    # obtiene, en caso de existir, un resultado en forma de tupla.
+    # de aquí, el tercer elemento es el texto en formato de bytes.
+    bmessage = channel.basic_get(queue='hello', no_ack=True)[2]
+    if bmessage:
+        # convierte de *bytes* a *string*.
+        message = bmessage.decode('utf-8')
+        # convierte de *string* a *dict*.
+        news_dict = json.loads(message)
+        return news_dict
+    else:
+        print("No hay mensajes en cola.")
+        return None
+
 def dequeue():
     # abre una nueva conexión.
     conn = pika.BlockingConnection(params)
