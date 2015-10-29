@@ -1,5 +1,9 @@
 # archivos de Python
 __pycache__/
 
+# archivos de configuración
+*.cfg
+!pseudo*.cfg
+
 # otros archivos
 .DS_Store
