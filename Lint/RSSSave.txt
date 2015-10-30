@@ -1,0 +1,122 @@
+No config file found, using default configuration
+************* Module RSSSave
+C: 16, 0: Wrong continued indentation.
+                str(feed[1]) + '" return n')
+                ^  | (bad-continuation)
+C: 24, 0: No space allowed around keyword argument assignment
+        new_node = Node("New", name = new_link)
+                                    ^ (bad-whitespace)
+C: 25, 0: No space allowed around keyword argument assignment
+        title_node = Node("Title", name = new['title'])
+                                        ^ (bad-whitespace)
+C: 26, 0: No space allowed around keyword argument assignment
+        date_node = Node("Date", name = new['pubDate'])
+                                      ^ (bad-whitespace)
+C: 27, 0: No space allowed around keyword argument assignment
+        category_node = Node("Category", name = new['category'])
+                                              ^ (bad-whitespace)
+C:  1, 0: Missing module docstring (missing-docstring)
+F:  1, 0: Unable to import 'py2neo' (import-error)
+F:  2, 0: Unable to import 'py2neo' (import-error)
+F:  4, 0: Unable to import 'cassandra.cluster' (import-error)
+C:  9, 0: Invalid constant name "feeds" (invalid-name)
+
+
+Report
+======
+33 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+External dependencies
+---------------------
+::
+
+    RSSFeed (RSSSave)
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |36     |92.31 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |0      |0.00  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |2      |5.13  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |1      |2.56  |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |7      |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++------------------+------------+
+|message id        |occurrences |
++==================+============+
+|bad-whitespace    |4           |
++------------------+------------+
+|import-error      |3           |
++------------------+------------+
+|missing-docstring |1           |
++------------------+------------+
+|invalid-name      |1           |
++------------------+------------+
+|bad-continuation  |1           |
++------------------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 7.88/10

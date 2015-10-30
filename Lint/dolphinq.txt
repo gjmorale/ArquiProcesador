@@ -1,0 +1,120 @@
+No config file found, using default configuration
+************* Module dolphinq
+C: 18, 0: Wrong continued indentation.
+             ':' + cfgdict['password'] +
+       |     ^ (bad-continuation)
+C: 19, 0: Wrong continued indentation.
+             '@' + cfgdict['hostaddr'] +
+       |     ^ (bad-continuation)
+C: 20, 0: Wrong continued indentation.
+             '/' + cfgdict['username'] )
+       |     ^ (bad-continuation)
+C: 20, 0: No space allowed before bracket
+             '/' + cfgdict['username'] )
+                                       ^ (bad-whitespace)
+C:  1, 0: Missing module docstring (missing-docstring)
+F:  2, 0: Unable to import 'pika' (import-error)
+C:  9, 0: Invalid constant name "cfgdict" (invalid-name)
+C: 17, 0: Invalid constant name "url" (invalid-name)
+C: 21, 0: Invalid constant name "params" (invalid-name)
+C: 24, 0: Missing function docstring (missing-docstring)
+C: 39, 0: Missing function docstring (missing-docstring)
+C: 57, 0: Missing function docstring (missing-docstring)
+C: 64, 4: Missing function docstring (missing-docstring)
+W: 64,34: Unused argument 'properties' (unused-argument)
+W: 64,26: Unused argument 'method' (unused-argument)
+W: 64,17: Unused argument 'channel' (unused-argument)
+
+
+Report
+======
+38 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |4      |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |39     |57.35 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |3      |4.41  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |11     |16.18 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |15     |22.06 |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |12     |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |3      |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |0      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++------------------+------------+
+|message id        |occurrences |
++==================+============+
+|missing-docstring |5           |
++------------------+------------+
+|unused-argument   |3           |
++------------------+------------+
+|invalid-name      |3           |
++------------------+------------+
+|bad-continuation  |3           |
++------------------+------------+
+|import-error      |1           |
++------------------+------------+
+|bad-whitespace    |1           |
++------------------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 6.05/10

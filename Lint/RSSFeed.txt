@@ -1,0 +1,177 @@
+No config file found, using default configuration
+************* Module RSSFeed
+C:109, 0: Wrong continued indentation.
+                        'manager?type=rss&sc=TEFURVJDRVJB&ul=1'))
+                        ^ | (bad-continuation)
+C:110, 0: Line too long (115/100) (line-too-long)
+C:124, 0: Wrong continued indentation.
+                                    {'class': 'section-title'}))[0].text
+                                    ^| (bad-continuation)
+C:128, 0: Wrong continued indentation.
+                                {'class': 'article-center-text'}))[0]
+                                ^       | (bad-continuation)
+C:134, 0: Wrong continued indentation.
+                    'title': title,
+                    ^ | (bad-continuation)
+C:135, 0: Wrong continued indentation.
+                    'pubDate': pubDate,
+                    ^ | (bad-continuation)
+C:136, 0: Wrong continued indentation.
+                    'content': content_string,
+                    ^ | (bad-continuation)
+C:137, 0: Wrong continued indentation.
+                    'category': category}
+                    ^ | (bad-continuation)
+C:146, 0: Line too long (102/100) (line-too-long)
+C:148, 0: Line too long (133/100) (line-too-long)
+C:150, 0: Line too long (138/100) (line-too-long)
+C:157, 0: Trailing whitespace (trailing-whitespace)
+C:169, 0: Wrong continued indentation.
+                'title': title,
+                ^ | (bad-continuation)
+C:170, 0: Wrong continued indentation.
+                #'dropTitle' : dropTitle,
+                ^ | (bad-continuation)
+C:171, 0: Wrong continued indentation.
+                'pubDate': pubDate,
+                ^ | (bad-continuation)
+C:172, 0: Wrong continued indentation.
+                'content': article_content,
+                ^ | (bad-continuation)
+C:173, 0: Wrong continued indentation.
+                'category': category}
+                ^ | (bad-continuation)
+C:  1, 0: Missing module docstring (missing-docstring)
+C: 11, 0: Missing function docstring (missing-docstring)
+C: 39, 0: Missing function docstring (missing-docstring)
+W: 51,11: Catching too general exception Exception (broad-except)
+C: 59, 0: Missing function docstring (missing-docstring)
+C: 74, 4: Invalid variable name "pp" (invalid-name)
+C:105, 0: Missing function docstring (missing-docstring)
+C:108, 4: Invalid variable name "d" (invalid-name)
+C:116, 8: Invalid variable name "pubDate" (invalid-name)
+W:119, 8: No exception type(s) specified (bare-except)
+W:125, 8: No exception type(s) specified (bare-except)
+C:131,12: Invalid variable name "p" (invalid-name)
+C:140, 0: Missing function docstring (missing-docstring)
+W:154, 4: No exception type(s) specified (bare-except)
+C:161, 4: Invalid variable name "dropTitle" (invalid-name)
+C:162, 4: Invalid variable name "pubDate" (invalid-name)
+W:165, 4: No exception type(s) specified (bare-except)
+E:168, 4: Undefined variable 'news' (undefined-variable)
+E:174,11: Undefined variable 'news' (undefined-variable)
+W:140,21: Unused argument 'self' (unused-argument)
+W:161, 4: Unused variable 'dropTitle' (unused-variable)
+
+
+Report
+======
+96 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |1          |=          |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |0          |=          |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |0          |=          |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |5      |5          |=          |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+External dependencies
+---------------------
+::
+
+    bs4 (RSSFeed)
+    dolphinq (RSSFeed)
+    feedparser (RSSFeed)
+    requests (RSSFeed)
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |99     |60.00 |99       |=          |
++----------+-------+------+---------+-----------+
+|docstring |9      |5.45  |9        |=          |
++----------+-------+------+---------+-----------+
+|comment   |32     |19.39 |32       |=          |
++----------+-------+------+---------+-----------+
+|empty     |25     |15.15 |25       |=          |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |0        |=          |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |0.000    |=          |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |29     |29       |=          |
++-----------+-------+---------+-----------+
+|refactor   |0      |0        |=          |
++-----------+-------+---------+-----------+
+|warning    |7      |7        |=          |
++-----------+-------+---------+-----------+
+|error      |2      |2        |=          |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++--------------------+------------+
+|message id          |occurrences |
++====================+============+
+|bad-continuation    |12          |
++--------------------+------------+
+|missing-docstring   |6           |
++--------------------+------------+
+|invalid-name        |6           |
++--------------------+------------+
+|line-too-long       |4           |
++--------------------+------------+
+|bare-except         |4           |
++--------------------+------------+
+|undefined-variable  |2           |
++--------------------+------------+
+|unused-variable     |1           |
++--------------------+------------+
+|unused-argument     |1           |
++--------------------+------------+
+|trailing-whitespace |1           |
++--------------------+------------+
+|broad-except        |1           |
++--------------------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 5.21/10 (previous run: 5.21/10, +0.00)
