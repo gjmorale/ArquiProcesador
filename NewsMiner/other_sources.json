@@ -1,0 +1,15 @@
+[
+  {
+    "id":      "EML",
+    "name":    "El Mercurio",
+    "lang":    "spanish",
+    "beg-url": "http://www.emol.com/noticias",
+    "end-url": "/todas.aspx",
+    "keyword": "caja_listado_noticias_todas",
+    "topic-list": [
+      "/tecnologia",
+      "/economia",
+      "/deportes"
+    ]
+  }
+]
