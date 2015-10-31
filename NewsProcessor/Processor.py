@@ -1,5 +1,6 @@
 import sys
 sys.path.insert(0, '../NewsMiner')
+from time import sleep
 import nltk, re, unicodedata, requests, json, dolphinq
 from nltk.corpus import wordnet as wn
 from nltk.stem import WordNetLemmatizer
@@ -250,6 +251,7 @@ if __name__ == '__main__':
                     #Agregar tags del filtro
                     post_content.update(filter(news['content'], news['title'], lang))
 
+                    sleep(0.5)
                     http_post(post_content)
 
             d = dolphinq.single_dequeue()
