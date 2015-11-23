@@ -34,6 +34,48 @@ def _feed_reader(feed_url):
 
     return news_list
 
+def _emol_news_list_reader(news_list_url):
+    # news_list_url % URL con la lista de noticias de una categoría de emol.
+    
+    headers = {'User-agent': 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1'}
+
+    try:
+        html_content = requests.get(news_list_url, headers = headers)
+    except:
+        print('Error Inesperado')
+
+    # Necessary variables to iterate over emol news pages.
+    soup = BeautifulSoup(html_content.text, 'html.parser')
+    view_state = soup.find("input", id = "__VIEWSTATE").get("value")
+    view_state_generator = soup.find("input", id = "__VIEWSTATEGENERATOR").get("value")
+    previous_page = soup.find("input", id = "__PREVIOUSPAGE").get("value")
+    actual_page = soup.find("input", id = "ucTodas_ucCajaTodas_PaginaActual").get("value")
+    event_target_n = int(actual_page) + 1 if int(actual_page) < 5 else 4
+    event_target = "ucTodas$ucCajaTodas$RepPaginacion$ctl0" + event_target_n + "$Pagina"
+
+    f = open("list.html", "w")
+    f.write(soup.prettify())
+    f.close()
+
+    try:
+        # Move up one page.
+        params =    {"__VIEWSTATE": view_state,
+                    "__PREVIOUSPAGE": previous_page,
+                    "__VIEWSTATEGENERATOR": view_state_generator,
+                    "ucTodas$ucCajaTodas$PaginaActual": actual_page, 
+                    "__EVENTTARGET": event_target,
+                    "__EVENTARGUMENT": ""}
+        html_content = requests.post(news_list_url, data = params, headers=headers)
+    except:
+        print('Error Inesperado 2')
+
+    soup = BeautifulSoup(html_content.text, 'html.parser')
+    f = open("list2.html", "w")
+    f.write(soup.prettify())
+    f.close()
+
+_emol_news_list_reader("http://www.emol.com/noticias/deportes/todas.aspx")
+
 def _news_reader(news_url, class_keyword):
     # news_url      % URL con el cual se obtiene la noticia.
     # class_keyword % *keyword* del DOM para encontrar el cuerpo de la noticia.
