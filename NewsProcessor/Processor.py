@@ -216,7 +216,7 @@ def http_post(data):
             #General handling, for all request exceptions
             #TODO: maybe keep an error queue?
             continue
-"""
+
 if __name__ == '__main__':
     #Here we recieve the dictionary from queue, filter and send each news individually.
 
@@ -255,4 +255,3 @@ if __name__ == '__main__':
                     http_post(post_content)
 
             d = dolphinq.single_dequeue()
-"""
