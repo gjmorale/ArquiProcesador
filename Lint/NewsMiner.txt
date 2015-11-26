@@ -1,0 +1,222 @@
+************* Module dolphinq
+C:  1,0: Missing docstring
+C:  9,0: Invalid name "cfgdict" (should match (([A-Z_][A-Z0-9_]*)|(__.*__))$)
+C: 17,0: Invalid name "url" (should match (([A-Z_][A-Z0-9_]*)|(__.*__))$)
+C: 21,0: Invalid name "params" (should match (([A-Z_][A-Z0-9_]*)|(__.*__))$)
+C: 24,0:enqueue: Missing docstring
+C: 39,0:single_dequeue: Missing docstring
+C: 57,0:dequeue: Missing docstring
+C: 64,4:dequeue.callback: Missing docstring
+W: 64,34:dequeue.callback: Unused argument 'properties'
+W: 64,17:dequeue.callback: Unused argument 'channel'
+W: 64,26:dequeue.callback: Unused argument 'method'
+************* Module NoRSS_reader
+C: 11,0: Line too long (132/80)
+C: 13,0: Line too long (154/80)
+C: 15,0: Line too long (90/80)
+C: 17,0: Line too long (93/80)
+C: 31,0: Line too long (133/80)
+C: 36,0: Line too long (104/80)
+C:122,0: Line too long (133/80)
+C:141,0: Line too long (112/80)
+C:142,0: Line too long (195/80)
+C:143,0: Line too long (181/80)
+C:144,0: Line too long (157/80)
+C:145,0: Line too long (171/80)
+W: 53,0: TODO: add news link to a list.
+C:  1,0: Invalid name "NoRSS_reader" (should match (([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$)
+C:  1,0: Missing docstring
+C:  9,0:_emol_next_page: Missing docstring
+R: 28,0:_emol_news_list_reader: Too many local variables (17/15)
+C: 28,0:_emol_news_list_reader: Missing docstring
+C: 35,8:_emol_news_list_reader: Invalid name "x" (should match [a-z_][a-z0-9_]{2,30}$)
+W: 40,12:_emol_news_list_reader: No exception type(s) specified
+C: 49,39:_emol_news_list_reader: Invalid name "f" (should match [a-z_][a-z0-9_]{2,30}$)
+C: 68,51:_emol_news_list_reader: Invalid name "f" (should match [a-z_][a-z0-9_]{2,30}$)
+C: 76,8:_emol_news_list_reader: Invalid name "x" (should match [a-z_][a-z0-9_]{2,30}$)
+C: 80,12:_emol_news_list_reader: Invalid name "y" (should match [a-z_][a-z0-9_]{2,30}$)
+W: 85,16:_emol_news_list_reader: No exception type(s) specified
+C:106,59:_emol_news_list_reader: Invalid name "f" (should match [a-z_][a-z0-9_]{2,30}$)
+C:114,39:_emol_news_list_reader: Invalid name "f" (should match [a-z_][a-z0-9_]{2,30}$)
+R: 28,0:_emol_news_list_reader: Too many branches (19/12)
+R: 28,0:_emol_news_list_reader: Too many statements (62/50)
+W: 80,12:_emol_news_list_reader: Unused variable 'y'
+C:118,0:_emol_news_reader: Missing docstring
+W:133,11:_emol_news_reader: Catching too general exception Exception
+W:  5,0: Unused import pprint
+W:  4,0: Unused import json
+W:  6,0: Unused import dolphinq
+************* Module RSSFeed
+C:110,0: Line too long (102/80)
+C:112,0: Line too long (135/80)
+C:114,0: Line too long (138/80)
+C:  1,0: Missing docstring
+C: 10,0:_feed_reader: Missing docstring
+C: 38,0:_news_reader: Missing docstring
+W: 50,11:_news_reader: Catching too general exception Exception
+C: 58,0:builder: Missing docstring
+C: 73,4:builder: Invalid name "pp" (should match [a-z_][a-z0-9_]{2,30}$)
+C:104,0:emol_link_reader: Missing docstring
+W:119,8:emol_link_reader: No exception type(s) specified
+E:117,23:emol_link_reader: Module 'urllib' has no 'request' member
+C:125,4:emol_link_reader: Invalid name "dropTitle" (should match [a-z_][a-z0-9_]{2,30}$)
+C:126,4:emol_link_reader: Invalid name "pubDate" (should match [a-z_][a-z0-9_]{2,30}$)
+W:130,8:emol_link_reader: No exception type(s) specified
+E:132,4:emol_link_reader: Undefined variable 'news'
+E:138,11:emol_link_reader: Undefined variable 'news'
+W:125,4:emol_link_reader: Unused variable 'dropTitle'
+W:104,21:emol_link_reader: Unused argument 'self'
+W:  2,0: Unused import bs4
+************* Module sapi_reader
+C:  1,0: Missing docstring
+C:  9,0:_unique_key: Missing docstring
+C: 14,0:_get_json_content: Missing docstring
+C: 21,0:_get_news: Missing docstring
+C: 32,0:builder: Missing docstring
+R:  1,0: Similar lines in 2 files
+==NoRSS_reader:132
+==RSSFeed:49
+    except Exception as err:
+        print()
+        print("# #################")
+        print("# Error inesperado.")
+        print("# URL:", news_url)
+        print("# ERR:", err)
+        print()
+
+
+
+Report
+======
+250 statements analysed.
+
+External dependencies
+---------------------
+::
+
+    dolphinq (RSSFeed,NoRSS_reader)
+
+
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |4      |NC         |NC         |0.00        |25.00    |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |NC         |NC         |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |15     |NC         |NC         |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |255    |65.05 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|docstring |16     |4.08  |NC       |NC         |
++----------+-------+------+---------+-----------+
+|comment   |61     |15.56 |NC       |NC         |
++----------+-------+------+---------+-----------+
+|empty     |60     |15.31 |NC       |NC         |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |8     |NC       |NC         |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |1.856 |NC       |NC         |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |48     |NC       |NC         |
++-----------+-------+---------+-----------+
+|refactor   |4      |NC       |NC         |
++-----------+-------+---------+-----------+
+|warning    |17     |NC       |NC         |
++-----------+-------+---------+-----------+
+|error      |3      |NC       |NC         |
++-----------+-------+---------+-----------+
+
+
+
+% errors / warnings by module
+-----------------------------
+
++-------------+-------+--------+---------+-----------+
+|module       |error  |warning |refactor |convention |
++=============+=======+========+=========+===========+
+|RSSFeed      |100.00 |35.29   |0.00     |22.92      |
++-------------+-------+--------+---------+-----------+
+|NoRSS_reader |0.00   |47.06   |75.00    |50.00      |
++-------------+-------+--------+---------+-----------+
+|dolphinq     |0.00   |17.65   |0.00     |16.67      |
++-------------+-------+--------+---------+-----------+
+
+
+
+Messages
+--------
+
++-----------+------------+
+|message id |occurrences |
++===========+============+
+|C0111      |19          |
++-----------+------------+
+|C0301      |15          |
++-----------+------------+
+|C0103      |14          |
++-----------+------------+
+|W0702      |4           |
++-----------+------------+
+|W0613      |4           |
++-----------+------------+
+|W0611      |4           |
++-----------+------------+
+|W0703      |2           |
++-----------+------------+
+|W0612      |2           |
++-----------+------------+
+|E0602      |2           |
++-----------+------------+
+|W0511      |1           |
++-----------+------------+
+|R0915      |1           |
++-----------+------------+
+|R0914      |1           |
++-----------+------------+
+|R0912      |1           |
++-----------+------------+
+|R0801      |1           |
++-----------+------------+
+|E1101      |1           |
++-----------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 6.64/10
+
