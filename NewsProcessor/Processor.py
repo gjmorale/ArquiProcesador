@@ -123,7 +123,7 @@ def people_filter(news):
 def places_filter(news):
     pl_tags = []
     for pair in PLACES.items():
-        start = news.find(rm_accents(pair[0]), 0)
+        start = news.lower().find(rm_accents(pair[0]).lower(), 0)
         while start != -1:
             #Iterate over the appearances of the place (pair[0]) and
             #check if they are exact (exclude words like "Japanese").
@@ -132,7 +132,7 @@ def places_filter(news):
                 #Save value of key-value pair.
                 pl_tags.append(clean_word(pair[1]).lower().replace(" ", "_"))
                 break
-            start = news.find(rm_accents(pair[0]), start + len(pair[0]))
+            start = news.lower.find(rm_accents(pair[0]).lower(), start + len(pair[0]))
     return pl_tags
 
 def events_filter(title, lang):
@@ -216,7 +216,7 @@ def http_post(data):
             #General handling, for all request exceptions
             #TODO: maybe keep an error queue?
             continue
-
+"""
 if __name__ == '__main__':
     #Here we recieve the dictionary from queue, filter and send each news individually.
 
@@ -255,4 +255,4 @@ if __name__ == '__main__':
                     http_post(post_content)
 
             d = dolphinq.single_dequeue()
-
+"""
