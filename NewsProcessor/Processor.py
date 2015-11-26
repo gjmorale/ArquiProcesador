@@ -117,7 +117,7 @@ def people_filter(news):
     p_tags = []
     for person in PEOPLE:
         if find_similar(news, person):
-            p_tags.append(clean_word(person))
+            p_tags.append(clean_word(person).lower().replace(" ", "_"))
     return p_tags
 
 def places_filter(news):
@@ -128,9 +128,9 @@ def places_filter(news):
             #Iterate over the appearances of the place (pair[0]) and
             #check if they are exact (exclude words like "Japanese").
             #Done by checking if next character is not alphabetic.
-            if not news[start + len(pair[0])].isalpha():
+            if start + len(pair[0]) >= len(news) or not news[start + len(pair[0])].isalpha():
                 #Save value of key-value pair.
-                pl_tags.append(clean_word(pair[1]))
+                pl_tags.append(clean_word(pair[1]).lower().replace(" ", "_"))
                 break
             start = news.find(rm_accents(pair[0]), start + len(pair[0]))
     return pl_tags
