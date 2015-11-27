@@ -132,7 +132,7 @@ def places_filter(news):
                 #Save value of key-value pair.
                 pl_tags.append(clean_word(pair[1]).lower().replace(" ", "_"))
                 break
-            start = news.lower.find(rm_accents(pair[0]).lower(), start + len(pair[0]))
+            start = news.lower().find(rm_accents(pair[0]).lower(), start + len(pair[0]))
     return pl_tags
 
 def events_filter(title, lang):
@@ -238,6 +238,11 @@ if __name__ == '__main__':
             for topic in d['topic-list']:
                 #Topic level
                 #Topic is a key value pair.
+
+                # If there are no news in this topic, skip it.
+                if not topic:
+                    continue
+
                 post_content['category'] = clean_word(list(topic.keys())[0])
                 news_list = list(topic.values())[0]
 
