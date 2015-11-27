@@ -1,0 +1,62 @@
+NewsMiner/dolphinq.py
+    LOC: 73
+    LLOC: 38
+    SLOC: 62
+    Comments: 25
+    Multi: 0
+    Blank: 11
+    - Comment Stats
+        (C % L): 34%
+        (C % S): 40%
+        (C + M % L): 34%
+NewsMiner/news_getter.py
+    LOC: 5
+    LLOC: 3
+    SLOC: 4
+    Comments: 1
+    Multi: 0
+    Blank: 1
+    - Comment Stats
+        (C % L): 20%
+        (C % S): 25%
+        (C + M % L): 20%
+NewsMiner/NoRSS_reader.py
+    LOC: 199
+    LLOC: 142
+    SLOC: 175
+    Comments: 32
+    Multi: 0
+    Blank: 24
+    - Comment Stats
+        (C % L): 16%
+        (C % S): 18%
+        (C + M % L): 16%
+NewsMiner/RSSFeed.py
+    LOC: 103
+    LLOC: 57
+    SLOC: 88
+    Comments: 36
+    Multi: 0
+    Blank: 15
+    - Comment Stats
+        (C % L): 35%
+        (C % S): 41%
+        (C + M % L): 35%
+NewsMiner/sapi_reader.py
+    LOC: 73
+    LLOC: 43
+    SLOC: 56
+    Comments: 15
+    Multi: 0
+    Blank: 17
+    - Comment Stats
+        (C % L): 21%
+        (C % S): 27%
+        (C + M % L): 21%
+** Total **
+    LOC: 453
+    LLOC: 283
+    SLOC: 385
+    Comments: 109
+    Multi: 0
+    Blank: 68
