@@ -176,8 +176,8 @@ def builder(filename):
         # Check if there are no new news, to not send empty messages
         new_news = False
         for topic_dict in source['topic-list']:
-            list_per_topic = topic_dict.popitem()[1]
-            if list_per_topic:
+            list_per_topic = topic_dict.popitem()
+            if list_per_topic and list_per_topic[1]:
                 new_news = True
                 break
 
