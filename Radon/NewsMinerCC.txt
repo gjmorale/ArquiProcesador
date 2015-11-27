@@ -3,9 +3,10 @@ NewsMiner/dolphinq.py
     F 24:0 enqueue - A (1)
     F 57:0 dequeue - A (1)
 NewsMiner/NoRSS_reader.py
-    F 27:0 _emol_news_list_reader - D (24)
-    F 150:0 builder - C (11)
-    F 125:0 _emol_news_reader - A (4)
+    F 134:0 builder - C (11)
+    F 50:0 _emol_news_list_reader - B (8)
+    F 27:0 _emol_save_details - B (7)
+    F 109:0 _emol_news_reader - A (4)
     F 8:0 _emol_next_page - A (3)
 NewsMiner/RSSFeed.py
     F 58:0 builder - B (6)

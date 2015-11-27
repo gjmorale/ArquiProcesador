@@ -21,16 +21,16 @@ NewsMiner/news_getter.py
         (C % S): 25%
         (C + M % L): 20%
 NewsMiner/NoRSS_reader.py
-    LOC: 199
-    LLOC: 142
-    SLOC: 175
-    Comments: 32
+    LOC: 183
+    LLOC: 127
+    SLOC: 159
+    Comments: 31
     Multi: 0
     Blank: 24
     - Comment Stats
-        (C % L): 16%
-        (C % S): 18%
-        (C + M % L): 16%
+        (C % L): 17%
+        (C % S): 19%
+        (C + M % L): 17%
 NewsMiner/RSSFeed.py
     LOC: 103
     LLOC: 57
@@ -54,9 +54,9 @@ NewsMiner/sapi_reader.py
         (C % S): 27%
         (C + M % L): 21%
 ** Total **
-    LOC: 453
-    LLOC: 283
-    SLOC: 385
-    Comments: 109
+    LOC: 437
+    LLOC: 268
+    SLOC: 369
+    Comments: 108
     Multi: 0
     Blank: 68
