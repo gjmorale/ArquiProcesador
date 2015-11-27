@@ -6,7 +6,6 @@
     "beg-url": "http://feeds.bbci.co.uk/news",
     "end-url": "/rss.xml",
     "keyword": "story-body",
-    "is-rss": true,
     "topic-list": [
       "",
       "/world",
@@ -23,7 +22,6 @@
     "beg-url": "http://www.theguardian.com",
     "end-url": "/rss",
     "keyword": "content__article-body",
-    "is-rss": true,
     "topic-list": [
       "/world",
       "/technology",
@@ -40,7 +38,6 @@
     "beg-url": "http://www.latercera.com/feed/manager?type=rss&sc=TEFURVJDRVJB",
     "end-url": "",
     "keyword": "article-center-text",
-    "is-rss": true,
     "topic-list": [
       "&categoryId=680",
       "&categoryId=678",

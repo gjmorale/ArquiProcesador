@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import bs4
 import requests
 import json
-import pprint
 import dolphinq
 from time import sleep
 
@@ -25,7 +24,7 @@ def _emol_next_page(soup, headers, news_list_url):
                 "__EVENTARGUMENT": ""}
     return requests.post(news_list_url, data = params, headers=headers)
 
-def _emol_news_list_reader(news_list_url, list_keyword):
+def _emol_news_list_reader(news_list_url, list_keyword, topic):
     # news_list_url % URL con la lista de noticias de una categoría de emol.
     
     headers = {'User-agent': 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1'}
@@ -46,9 +45,12 @@ def _emol_news_list_reader(news_list_url, list_keyword):
             break
 
     # Get last fetched link
-    with open("last_emol.txt", 'r') as f:
-        last_prev_link = f.read()
+    with open("last_emol.json") as last:
+        last_dict = json.load(last)
+    last_prev_link = last_dict[0][topic]
     last_link = ""
+    # To save it, to avoid duplicates.
+    first_link = last_prev_link
 
     # For debugging purposes. TODO: add news link to a list.
     soup = BeautifulSoup(html_content.text, 'html.parser')
@@ -65,13 +67,16 @@ def _emol_news_list_reader(news_list_url, list_keyword):
         else:
             last_link = str(child.find("a")['href']).strip()
             if last_prev_link == last_link:
-                with open("last_emol.txt", 'w') as f:
-                    f.write(last_link)
+                last_dict[0][topic] = first_link
+                with open("last_emol.json", 'w') as f:
+                    json.dump(last_dict, f)
                 return news_list
             news['link']  = last_link
             news['title'] = str(child.find("a").string).strip()
             news['date']  = date
             news_list.append(news)
+            if first_link == last_prev_link:
+                first_link = last_link
 
     for x in range(1, 3):
         # Get the news in the first 3 pages of emol.
@@ -103,16 +108,18 @@ def _emol_news_list_reader(news_list_url, list_keyword):
                 else:
                     last_link = str(child.find("a")['href']).strip()
                     if last_prev_link == last_link:
-                        with open("last_emol.txt", 'w') as f:
-                            f.write(last_link)
+                        last_dict[0][topic] = first_link
+                        with open("last_emol.json", 'w') as f:
+                            json.dump(last_dict, f)
                         return news_list
                     news['link']  = last_link
                     news['title'] = str(child.find("a").string).strip()
                     news['date']  = date
                     news_list.append(news)
 
-    with open("last_emol.txt", 'w') as f:
-        f.write(last_link)
+    last_dict[0][topic] = first_link
+    with open("last_emol.json", 'w') as f:
+        json.dump(last_dict, f)
     return news_list
 
 def _emol_news_reader(news_url, class_keyword):
@@ -123,12 +130,14 @@ def _emol_news_reader(news_url, class_keyword):
     try:
         # genera una solicitud GET.
         rget = requests.get(news_url, headers = headers)
+        #print (rget.status_code)
         soup = BeautifulSoup(rget.content, 'html.parser')
         body = soup.find('div', class_=class_keyword)
-        news_content = ""
-        for string in body.strings:
-            news_content = news_content + string + "\n\n"
-        return news_content
+        news_content = []
+        if body.strings:
+            for string in body.strings:
+                news_content.append("<p>" + string + "</p>")
+            return str(news_content)
     # si algo no funciona...
     except Exception as err:
         print()
@@ -138,7 +147,52 @@ def _emol_news_reader(news_url, class_keyword):
         print("# ERR:", err)
         print()
 
-#print(_emol_news_list_reader("http://www.emol.com/noticias/deportes/todas.aspx", "caja_listado_noticia_todas"))
+def builder(filename):
+    # filename % nombre del archivo con los NoRSS list.
+
+    # obtiene todos los *sources* a partir del archivo. Si bien ahora hay 1 NoRSS, se deja de esta manera para mantener extensibilidad.
+    with open(filename) as srcfile:
+        all_sources = [source for source in json.load(srcfile)]
+
+    for source in all_sources:
+        for topic in source['topic-list'][:]:
+            # forma el URL del *feed*.
+            feed_url = source['beg-url'] + topic + source['end-url']
+            news_list = _emol_news_list_reader(feed_url, source['list-keyword'], topic)
+
+            # agrupa el tema con la lista asociada de noticias;
+            # luego, lo reemplaza por el tema que viene vacío.
+            ndict = {topic: news_list}
+            index = source['topic-list'].index(topic)
+            source['topic-list'][index] = ndict
+            for news in news_list:
+                # agrega el contenido de cada noticia.
+                news['content'] = _emol_news_reader(news['link'], source['keyword'])
+                if news['content'] == "[]":
+                    news_list.remove(news)
+                # print(news['title'])
+                # input("Presione ENTER para continuar.\n")
+
+        # Check if there are no new news, to not send empty messages
+        new_news = False
+        for topic_dict in source['topic-list']:
+            list_per_topic = topic_dict.popitem()[1]
+            if list_per_topic:
+                new_news = True
+                break
+
+        if new_news:
+            # elimina las llaves innecesarias.
+            source.pop('id')
+            source.pop('beg-url')
+            source.pop('end-url')
+            source.pop('keyword')
+            source.pop('list-keyword')
+            dolphinq.enqueue(source)
+
+#builder("NoRSS_sources.json")
+
+#print(_emol_news_list_reader("http://www.emol.com/noticias/deportes/todas.aspx", "caja_listado_noticia_todas", "/deportes"))
 #print(_emol_news_reader("http://www.emol.com/noticias/Deportes/2015/11/26/761046/En-Azul-Azul-solo-piensan-en-Beccacece-17-de-diciembre-seria-presentado-como-nuevo-DT-de-la-U.html", "EmolText"))
 #_emol_news_reader("http://www.emol.com/noticias/Deportes/2015/11/26/761096/Leverkusen-publica-video-del-duro-trabajo-de-recuperacion-que-realiza-Charles-Aranguiz.html", "EmolText")
 #_emol_news_reader("http://www.emol.com/noticias/Deportes/2015/11/18/759804/Programacion-revanchas-de-la-semifinales-de-la-Copa-Chile-2015.html", "EmolText")
