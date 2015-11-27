@@ -1,0 +1,137 @@
+************* Module Processor
+C: 79,0: Line too long (99/80)
+C: 85,0: Line too long (95/80)
+C: 86,0: Line too long (86/80)
+C: 90,0: Line too long (86/80)
+C:131,0: Line too long (93/80)
+C:135,0: Line too long (86/80)
+C:163,0: Line too long (88/80)
+C:221,0: Line too long (87/80)
+C:252,0: Line too long (85/80)
+W: 13,0: TODO: extend people and places list
+W:217,0: TODO: maybe keep an error queue?
+W:191,0:filter: Redefining built-in 'filter'
+C:  1,0: Missing docstring
+C: 69,0:init_spanish_lemma_dict: Missing docstring
+W: 78,17:find_similar: Redefining name 'news' from outer scope (line 244)
+C: 78,0:find_similar: Missing docstring
+C: 97,0:rm_accents: Missing docstring
+C:106,0:clean_word: Missing docstring
+C:111,0:rm_http: Missing docstring
+W:116,18:people_filter: Redefining name 'news' from outer scope (line 244)
+C:116,0:people_filter: Missing docstring
+W:123,18:places_filter: Redefining name 'news' from outer scope (line 244)
+C:123,0:places_filter: Missing docstring
+W:138,25:events_filter: Redefining name 'lang' from outer scope (line 236)
+C:138,0:events_filter: Missing docstring
+W:191,24:filter: Redefining name 'lang' from outer scope (line 236)
+W:191,11:filter: Redefining name 'news' from outer scope (line 244)
+C:191,0:filter: Missing docstring
+C:205,0:http_post: Missing docstring
+W:207,8:http_post: Unused variable 'i'
+C:226,8: Invalid name "d" (should match (([A-Z_][A-Z0-9_]*)|(__.*__))$)
+C:229,12: Invalid name "post_content" (should match (([A-Z_][A-Z0-9_]*)|(__.*__))$)
+C:236,12: Invalid name "lang" (should match (([A-Z_][A-Z0-9_]*)|(__.*__))$)
+C:257,12: Invalid name "d" (should match (([A-Z_][A-Z0-9_]*)|(__.*__))$)
+W:  4,0: Unused import json
+W:  5,0: Unused import wn
+W:  8,0: Unused import wt
+
+
+Report
+======
+121 statements analysed.
+
+Statistics by type
+------------------
+
++---------+-------+-----------+-----------+------------+---------+
+|type     |number |old number |difference |%documented |%badname |
++=========+=======+===========+===========+============+=========+
+|module   |1      |1          |=          |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+|class    |0      |0          |=          |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|method   |0      |0          |=          |0           |0        |
++---------+-------+-----------+-----------+------------+---------+
+|function |10     |10         |=          |0.00        |0.00     |
++---------+-------+-----------+-----------+------------+---------+
+
+
+
+Raw metrics
+-----------
+
++----------+-------+------+---------+-----------+
+|type      |number |%     |previous |difference |
++==========+=======+======+=========+===========+
+|code      |126    |55.51 |126      |=          |
++----------+-------+------+---------+-----------+
+|docstring |60     |26.43 |60       |=          |
++----------+-------+------+---------+-----------+
+|comment   |19     |8.37  |19       |=          |
++----------+-------+------+---------+-----------+
+|empty     |22     |9.69  |22       |=          |
++----------+-------+------+---------+-----------+
+
+
+
+Duplication
+-----------
+
++-------------------------+------+---------+-----------+
+|                         |now   |previous |difference |
++=========================+======+=========+===========+
+|nb duplicated lines      |0     |0        |=          |
++-------------------------+------+---------+-----------+
+|percent duplicated lines |0.000 |0.000    |=          |
++-------------------------+------+---------+-----------+
+
+
+
+Messages by category
+--------------------
+
++-----------+-------+---------+-----------+
+|type       |number |previous |difference |
++===========+=======+=========+===========+
+|convention |24     |24       |=          |
++-----------+-------+---------+-----------+
+|refactor   |0      |0        |=          |
++-----------+-------+---------+-----------+
+|warning    |13     |13       |=          |
++-----------+-------+---------+-----------+
+|error      |0      |0        |=          |
++-----------+-------+---------+-----------+
+
+
+
+Messages
+--------
+
++-----------+------------+
+|message id |occurrences |
++===========+============+
+|C0111      |11          |
++-----------+------------+
+|C0301      |9           |
++-----------+------------+
+|W0621      |6           |
++-----------+------------+
+|C0103      |4           |
++-----------+------------+
+|W0611      |3           |
++-----------+------------+
+|W0511      |2           |
++-----------+------------+
+|W0622      |1           |
++-----------+------------+
+|W0612      |1           |
++-----------+------------+
+
+
+
+Global evaluation
+-----------------
+Your code has been rated at 6.94/10 (previous run: 6.94/10)
+
