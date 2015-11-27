@@ -24,40 +24,8 @@ def _emol_next_page(soup, headers, news_list_url):
                 "__EVENTARGUMENT": ""}
     return requests.post(news_list_url, data = params, headers=headers)
 
-def _emol_news_list_reader(news_list_url, list_keyword, topic):
-    # news_list_url % URL con la lista de noticias de una categoría de emol.
-    
-    headers = {'User-agent': 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1'}
-    news_list = []
-    date = ""
-
-    for x in range(30):
-        # Sometimes the connection may fail. Try 30 times (aprox. 15 seconds) before definitely failing.
-        try:
-            html_content = requests.get(news_list_url, headers = headers)
-        except:
-            print('Error Inesperado')
-            if x == 19:
-                print ('No se pudo procesar emol')
-                return False
-            sleep(0.5)
-        else:
-            break
-
-    # Get last fetched link
-    with open("last_emol.json") as last:
-        last_dict = json.load(last)
-    last_prev_link = last_dict[0][topic]
-    last_link = ""
-    # To save it, to avoid duplicates.
-    first_link = last_prev_link
-
-    # For debugging purposes. TODO: add news link to a list.
-    soup = BeautifulSoup(html_content.text, 'html.parser')
-    list_page = soup.find("div", id = list_keyword).prettify()
-    list_soup = BeautifulSoup(list_page, 'html.parser')
-
-    # Save news from first page.
+def _emol_save_details(list_soup, news_list, last_dict, date, topic, last_link, last_prev_link, first_link):
+    # Changes in list_soup, last_dict and news_list should persist. Not en date, last_link and first_link, have to return those
     for child in list_soup.contents[0].contents:
         news = {}
         if isinstance(child, bs4.NavigableString):
@@ -70,52 +38,68 @@ def _emol_news_list_reader(news_list_url, list_keyword, topic):
                 last_dict[0][topic] = first_link
                 with open("last_emol.json", 'w') as f:
                     json.dump(last_dict, f)
-                return news_list
+                return []
             news['link']  = last_link
             news['title'] = str(child.find("a").string).strip()
             news['date']  = date
             news_list.append(news)
             if first_link == last_prev_link:
                 first_link = last_link
+    return [date, last_link, first_link]
+
+def _emol_news_list_reader(news_list_url, list_keyword, topic):
+    # news_list_url % URL con la lista de noticias de una categoría de emol.
+    
+    headers = {'User-agent': 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1'}
+    news_list = []
+    date = ""
+
+    try:
+        html_content = requests.get(news_list_url, headers = headers)
+    except:
+        print('Error Inesperado')
+        return False
+
+    # Get last fetched link
+    with open("last_emol.json") as last:
+        last_dict = json.load(last)
+    last_prev_link = last_dict[0][topic]
+    last_link = ""
+    # Save first, to avoid duplicates.
+    first_link = last_prev_link
+
+    soup = BeautifulSoup(html_content.text, 'html.parser')
+    list_page = soup.find("div", id = list_keyword).prettify()
+    list_soup = BeautifulSoup(list_page, 'html.parser')
+
+    # Save news from first page.
+    ret_holder = _emol_save_details(list_soup, news_list, last_dict, date, topic, last_link, last_prev_link, first_link)
+    # Returns an empty list if we hit a duplicate, so we return.
+    if not ret_holder:
+        return news_list
+    date = ret_holder[0]
+    last_link = ret_holder[1]
+    first_link = ret_holder[2]
 
     for x in range(1, 3):
         # Get the news in the first 3 pages of emol.
+        try:
+            html_content = _emol_next_page(soup, headers, news_list_url)
+        except:
+            print('Error Inesperado, no se obtuvieron todas las páginas')
+            return news_list
 
-        got_page = False
-        for y in range(3):
-            # Make 3 attempts at getting the next page.
-            try:
-                html_content = _emol_next_page(soup, headers, news_list_url)
-            except:
-                print('Error Inesperado')
-                sleep(0.8)
-            else:
-                # Correctly got page.
-                got_page = True
-                break
+        soup = BeautifulSoup(html_content.text, 'html.parser')
+        list_page = soup.find("div", id = list_keyword).prettify()
+        list_soup = BeautifulSoup(list_page, 'html.parser')
 
-        if got_page:
-            soup = BeautifulSoup(html_content.text, 'html.parser')
-            list_page = soup.find("div", id = list_keyword).prettify()
-            list_soup = BeautifulSoup(list_page, 'html.parser')
-
-            for child in list_soup.contents[0].contents:
-                news = {}
-                if isinstance(child, bs4.NavigableString):
-                    continue
-                if "fecha" in child['id'].lower():
-                    date = str(child.string).strip()
-                else:
-                    last_link = str(child.find("a")['href']).strip()
-                    if last_prev_link == last_link:
-                        last_dict[0][topic] = first_link
-                        with open("last_emol.json", 'w') as f:
-                            json.dump(last_dict, f)
-                        return news_list
-                    news['link']  = last_link
-                    news['title'] = str(child.find("a").string).strip()
-                    news['date']  = date
-                    news_list.append(news)
+        #Saves link, date and title of news in page.
+        ret_holder = _emol_save_details(list_soup, news_list, last_dict, date, topic, last_link, last_prev_link, first_link)
+        if not ret_holder:
+            return news_list
+        date = ret_holder[0]
+        last_link = ret_holder[1]
+        first_link = ret_holder[2]
 
     last_dict[0][topic] = first_link
     with open("last_emol.json", 'w') as f:
