@@ -75,6 +75,11 @@ def builder(filename):
 
     for source in all_sources:
         for topic in source['topic-list'][:]:
+            # noticias recientes, ergo no-duplicadas.
+            recent_news = []
+            with open(source['id'] + '.txt') as histfile:
+                all_news = histfile.read().splitlines()
+
             # forma el URL del *feed*.
             feed_url = source['beg-url'] + topic + source['end-url']
             news_list = _feed_reader(feed_url)
@@ -84,12 +89,23 @@ def builder(filename):
             ndict = {topic: news_list}
             index = source['topic-list'].index(topic)
             source['topic-list'][index] = ndict
+            # obtiene la lista de noticias ya vistas.
             for news in news_list:
                 # agrega el contenido de cada noticia.
-                news['content'] = _news_reader(news['link'], source['keyword'])
-                print(news['title'])
+                link = news['link']
+                print(link)
+                # print(all_news)
+                if link not in all_news:
+                    news['content'] = _news_reader(link, source['keyword'])
+                    recent_news.append(link)
+                    print(news['title'])
                 # pp.pprint(all_sources)
                 # input("Presione ENTER para continuar.\n")
+
+            # actualiza el historial de noticias ya extraídas.
+            with open(source['id'] + '.txt', 'a') as histfile:
+                for link in recent_news:
+                    histfile.write(link + '\n')
 
         # elimina las llaves innecesarias.
         source.pop('id')
