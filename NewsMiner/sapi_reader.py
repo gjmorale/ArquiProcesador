@@ -36,8 +36,8 @@ def builder(filename, limit=10, start=0, end=5):
 
     # forma el URL a partir de los argumentos recibidos.
     full_url = '{}{}?page={}&limit={}'.format(PROTOCOL, SAPI_URL, start, limit)
-    # print(full_url)
     end_page = 'page={}'.format(end)
+    print(full_url)
 
     # aquí hace falta un *do-while*,
     # pero claro, Python no tiene uno. [PEP315]
