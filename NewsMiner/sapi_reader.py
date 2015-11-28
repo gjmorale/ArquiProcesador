@@ -1,6 +1,7 @@
 import requests
 import json
-# import pprint
+import pprint
+import dolphinq
 
 PROTOCOL = 'http://'
 SAPI_URL = 'arquiapi.ing.puc.cl/news'
@@ -29,11 +30,14 @@ def _get_news(news_url):
     return news_dict
 
 
-def builder(filename, limit=10):
+def builder(filename, limit=10, start=0, end=5):
     with open(filename) as srcfile:
         template = json.load(srcfile)
 
-    full_url = PROTOCOL + SAPI_URL + '?limit=' + str(limit)
+    # forma el URL a partir de los argumentos recibidos.
+    full_url = '{}{}?page={}&limit={}'.format(PROTOCOL, SAPI_URL, start, limit)
+    # print(full_url)
+    end_page = 'page={}'.format(end)
 
     # aquí hace falta un *do-while*,
     # pero claro, Python no tiene uno. [PEP315]
@@ -64,10 +68,16 @@ def builder(filename, limit=10):
 
         # por último, revisa si es que hay más noticias.
         next_url = jcontent['next']
-        if 'page=0' not in next_url:
-            full_url = PROTOCOL + next_url
-        else:
+        if end_page in next_url:
+            print("Hemos llegado a la página solicitada.")
+            break
+        elif 'page=0' in next_url:
             print("No hay más noticias.")
             break
+        else:
+            full_url = PROTOCOL + next_url
 
-#builder('sapi.json')
+    # pprint.pprint(template)
+    dolphinq.enqueue(template)
+
+# builder('sapi.json', limit=50, start=0, end=100)
