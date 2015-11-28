@@ -84,23 +84,27 @@ def builder(filename):
             feed_url = source['beg-url'] + topic[0] + source['end-url']
             news_list = _feed_reader(feed_url)
 
-            # agrupa el tema con la lista asociada de noticias;
-            # luego, lo reemplaza por el tema que viene vacío.
-            ndict = {topic[1]: news_list}
-            index = source['topic-list'].index(topic)
-            source['topic-list'][index] = ndict
             # obtiene la lista de noticias ya vistas.
-            for news in news_list:
+            for news in news_list[:]:
                 # agrega el contenido de cada noticia.
                 link = news['link']
                 print(link)
                 # print(all_news)
-                if link not in all_news:
+                if link in all_news:
+                    news_list.remove(news)
+                else:
                     news['content'] = _news_reader(link, source['keyword'])
                     recent_news.append(link)
                     print(news['title'])
                 # pp.pprint(all_sources)
                 # input("Presione ENTER para continuar.\n")
+
+            # agrupa el tema con la lista asociada de noticias;
+            # luego, lo reemplaza por el tema que viene vacío.
+            ndict = {topic[1]: news_list}
+            index = source['topic-list'].index(topic)
+            source['topic-list'][index] = ndict
+            # pprint.pprint(source)
 
             # actualiza el historial de noticias ya extraídas.
             with open(source['id'] + '.txt', 'a') as histfile:
