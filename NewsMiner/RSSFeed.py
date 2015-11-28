@@ -81,12 +81,12 @@ def builder(filename):
                 all_news = histfile.read().splitlines()
 
             # forma el URL del *feed*.
-            feed_url = source['beg-url'] + topic + source['end-url']
+            feed_url = source['beg-url'] + topic[0] + source['end-url']
             news_list = _feed_reader(feed_url)
 
             # agrupa el tema con la lista asociada de noticias;
             # luego, lo reemplaza por el tema que viene vacío.
-            ndict = {topic: news_list}
+            ndict = {topic[1]: news_list}
             index = source['topic-list'].index(topic)
             source['topic-list'][index] = ndict
             # obtiene la lista de noticias ya vistas.
@@ -115,5 +115,4 @@ def builder(filename):
         # finalmente, encola las noticias de este *source*.
         dolphinq.enqueue(source)
 
-#builder('RSS_sources.json')
-#oad_sources('RSS_sources.json')
+# builder('RSS_sources.json')
