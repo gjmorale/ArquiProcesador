@@ -229,8 +229,8 @@ if __name__ == '__main__':
             post_content = {}
 
             #DB credentials
-            post_content['username'] = os.environ['DOLPHIN_USER']
-            post_content['password'] = os.environ['DOLPHIN_PASS']
+            post_content['username'] = "admin"
+            post_content['password'] = "admin"
 
             post_content['media'] = clean_word(d['name'])
             lang = d['lang']
@@ -251,12 +251,23 @@ if __name__ == '__main__':
                     post_content['title'] = news['title']
                     post_content['date'] = clean_word(news['date'])
                     post_content['nid'] = rm_http(news['link'])
-                    post_content['content'] = news['content']
+
+                    clean_content = ""
+                    i = len(news['content'].split(","))
+                    for token in news['content'].split(","):
+                        i -= 1
+                        clean_content += token
+                        if clean_content[len(clean_content)-1] != ">" and i > 0:
+                            clean_content += ","
+                    if clean_content[0] == "[":
+                        clean_content = clean_content[1:len(clean_content)]
+                    if clean_content[len(clean_content)-1] == "]":
+                        clean_content = clean_content[0:len(clean_content)-1]
+                    post_content['content'] = clean_content
 
                     #Agregar tags del filtro
                     post_content.update(filter(news['content'], news['title'], lang))
 
                     sleep(0.5)
                     http_post(post_content)
-
             d = dolphinq.single_dequeue()
