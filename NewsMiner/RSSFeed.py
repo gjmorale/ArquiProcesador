@@ -82,7 +82,16 @@ def builder(filename):
 
             # forma el URL del *feed*.
             feed_url = source['beg-url'] + topic[0] + source['end-url']
-            news_list = _feed_reader(feed_url)
+            try:
+                news_list = _feed_reader(feed_url)
+            except Exception as err:
+                news_list = []
+                print()
+                print("# ###################")
+                print("# Feed no disponible.")
+                print("# URL:", feed_url)
+                print("# ERR:", err)
+                print()
 
             # obtiene la lista de noticias ya vistas.
             for news in news_list[:]:
