@@ -229,8 +229,8 @@ if __name__ == '__main__':
             post_content = {}
 
             #DB credentials
-            post_content['username'] = "admin"
-            post_content['password'] = "admin"
+            post_content['username'] = os.environ['DOLPHIN_USER']
+            post_content['password'] = os.environ['DOLPHIN_PASS']
 
             post_content['media'] = clean_word(d['name'])
             lang = d['lang']
