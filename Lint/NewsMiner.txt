@@ -219,4 +219,3 @@ Messages
 Global evaluation
 -----------------
 Your code has been rated at 6.64/10
-

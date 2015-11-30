@@ -1,0 +1,5 @@
+NewsMiner/dolphinq.py - A (79.89)
+NewsMiner/news_getter.py - A (100.00)
+NewsMiner/NoRSS_reader.py - A (56.77)
+NewsMiner/RSSFeed.py - A (80.97)
+NewsMiner/sapi_reader.py - A (75.65)

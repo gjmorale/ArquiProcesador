@@ -1,0 +1,18 @@
+NewsProcessor/Processor.py
+    LOC: 257
+    LLOC: 126
+    SLOC: 223
+    Comments: 40
+    Multi: 0
+    Blank: 34
+    - Comment Stats
+        (C % L): 16%
+        (C % S): 18%
+        (C + M % L): 16%
+** Total **
+    LOC: 257
+    LLOC: 126
+    SLOC: 223
+    Comments: 40
+    Multi: 0
+    Blank: 34

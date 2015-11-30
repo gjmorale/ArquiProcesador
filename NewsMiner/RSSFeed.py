@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import bs4
 import feedparser
 import requests
 import urllib
@@ -74,21 +75,50 @@ def builder(filename):
 
     for source in all_sources:
         for topic in source['topic-list'][:]:
+            # noticias recientes, ergo no-duplicadas.
+            recent_news = []
+            with open(source['id'] + '.txt') as histfile:
+                all_news = histfile.read().splitlines()
+
             # forma el URL del *feed*.
-            feed_url = source['beg-url'] + topic + source['end-url']
-            news_list = _feed_reader(feed_url)
+            feed_url = source['beg-url'] + topic[0] + source['end-url']
+            try:
+                news_list = _feed_reader(feed_url)
+            except Exception as err:
+                news_list = []
+                print()
+                print("# ###################")
+                print("# Feed no disponible.")
+                print("# URL:", feed_url)
+                print("# ERR:", err)
+                print()
+
+            # obtiene la lista de noticias ya vistas.
+            for news in news_list[:]:
+                # agrega el contenido de cada noticia.
+                link = news['link']
+                print(link)
+                # print(all_news)
+                if link in all_news:
+                    news_list.remove(news)
+                else:
+                    news['content'] = _news_reader(link, source['keyword'])
+                    recent_news.append(link)
+                    print(news['title'])
+                # pp.pprint(all_sources)
+                # input("Presione ENTER para continuar.\n")
 
             # agrupa el tema con la lista asociada de noticias;
             # luego, lo reemplaza por el tema que viene vacío.
-            ndict = {topic: news_list}
+            ndict = {topic[1]: news_list}
             index = source['topic-list'].index(topic)
             source['topic-list'][index] = ndict
-            for news in news_list:
-                # agrega el contenido de cada noticia.
-                news['content'] = _news_reader(news['link'], source['keyword'])
-                print(news['title'])
-                # pp.pprint(all_sources)
-                # input("Presione ENTER para continuar.\n")
+            # pprint.pprint(source)
+
+            # actualiza el historial de noticias ya extraídas.
+            with open(source['id'] + '.txt', 'a') as histfile:
+                for link in recent_news:
+                    histfile.write(link + '\n')
 
         # elimina las llaves innecesarias.
         source.pop('id')
@@ -98,42 +128,4 @@ def builder(filename):
         # finalmente, encola las noticias de este *source*.
         dolphinq.enqueue(source)
 
-# builder('sources.json')
-
-def emol_link_reader(self, link):
-    #This method reads news from Emol.
-
-    # Formato link emol:
-    # Header: http://www.emol.com/noticias/
-    # Categoria: Espectaculos/
-    # Fecha+Titulo: 2015/10/20/755206/ausencia-de-luke-skywalker-en-trailer-y-afiche-de-star-wars.html
-    #
-    # Como no es RSS no hay suscripción directa a feeds pero si existe una opción de recibir noticias al e-mail que se puede explorar
-    #
-    #link = 'http://www.emol.com/noticias/Espectaculos/2015/10/20/755206/ausencia-de-luke-skywalker-en-trailer-y-afiche-de-star-wars.html'
-
-    try:
-        html_content = urllib.request.urlopen(link).read()
-    except:
-        print('Error Inesperado')
-
-
-    soup = BeautifulSoup(html_content, 'html.parser')
-
-    title = (soup.find(id='cuDetalle_cuTitular_tituloNoticia')).text
-    dropTitle = (soup.find(id='cuDetalle_cuTitular_bajadaNoticia')).text
-    pubDate = (soup.find(id='cuDetalle_cuCreditos_fecha')).text
-    try:
-        category = (soup.find(id='cuDetalle_cuNavegador_txtseccion')).text
-    except:
-        category = "Otro"
-    article_content = (soup.find(id='cuDetalle_cuTexto_textoNoticia')).text
-    news[link] = {'link': link,
-                'title': title,
-                #'dropTitle' : dropTitle,
-                'pubDate': pubDate,
-                'content': article_content,
-                'category': category}
-    return news
-
-#oad_sources('sources.json')
+# builder('RSS_sources.json')

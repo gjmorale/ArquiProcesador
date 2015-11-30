@@ -1,4 +1,4 @@
-import sys
+import sys, os
 sys.path.insert(0, '../NewsMiner')
 from time import sleep
 import nltk, re, unicodedata, requests, json, dolphinq
@@ -117,22 +117,22 @@ def people_filter(news):
     p_tags = []
     for person in PEOPLE:
         if find_similar(news, person):
-            p_tags.append(clean_word(person))
+            p_tags.append(clean_word(person).lower().replace(" ", "_"))
     return p_tags
 
 def places_filter(news):
     pl_tags = []
     for pair in PLACES.items():
-        start = news.find(rm_accents(pair[0]), 0)
+        start = news.lower().find(rm_accents(pair[0]).lower(), 0)
         while start != -1:
             #Iterate over the appearances of the place (pair[0]) and
             #check if they are exact (exclude words like "Japanese").
             #Done by checking if next character is not alphabetic.
-            if not news[start + len(pair[0])].isalpha():
+            if start + len(pair[0]) >= len(news) or not news[start + len(pair[0])].isalpha():
                 #Save value of key-value pair.
-                pl_tags.append(clean_word(pair[1]))
+                pl_tags.append(clean_word(pair[1]).lower().replace(" ", "_"))
                 break
-            start = news.find(rm_accents(pair[0]), start + len(pair[0]))
+            start = news.lower().find(rm_accents(pair[0]).lower(), start + len(pair[0]))
     return pl_tags
 
 def events_filter(title, lang):
@@ -229,8 +229,8 @@ if __name__ == '__main__':
             post_content = {}
 
             #DB credentials
-            post_content['username'] = "admin"
-            post_content['password'] = "admin"
+            post_content['username'] = os.environ['DOLPHIN_USER']
+            post_content['password'] = os.environ['DOLPHIN_PASS']
 
             post_content['media'] = clean_word(d['name'])
             lang = d['lang']
@@ -238,6 +238,11 @@ if __name__ == '__main__':
             for topic in d['topic-list']:
                 #Topic level
                 #Topic is a key value pair.
+
+                # If there are no news in this topic, skip it.
+                if not topic:
+                    continue
+
                 post_content['category'] = clean_word(list(topic.keys())[0])
                 news_list = list(topic.values())[0]
 
@@ -246,13 +251,23 @@ if __name__ == '__main__':
                     post_content['title'] = news['title']
                     post_content['date'] = clean_word(news['date'])
                     post_content['nid'] = rm_http(news['link'])
-                    post_content['content'] = news['content']
+
+                    clean_content = ""
+                    i = len(news['content'].split(","))
+                    for token in news['content'].split(","):
+                        i -= 1
+                        clean_content += token
+                        if clean_content[len(clean_content)-1] != ">" and i > 0:
+                            clean_content += ","
+                    if clean_content[0] == "[":
+                        clean_content = clean_content[1:len(clean_content)]
+                    if clean_content[len(clean_content)-1] == "]":
+                        clean_content = clean_content[0:len(clean_content)-1]
+                    post_content['content'] = clean_content
 
                     #Agregar tags del filtro
                     post_content.update(filter(news['content'], news['title'], lang))
 
                     sleep(0.5)
                     http_post(post_content)
-
             d = dolphinq.single_dequeue()
-

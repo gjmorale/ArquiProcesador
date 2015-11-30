@@ -7,12 +7,11 @@
     "end-url": "/rss.xml",
     "keyword": "story-body",
     "topic-list": [
-      "",
-      "/world",
-      "/technology",
-      "/business",
-      "/politics",
-      "/health"
+      ["/world",      "internacional"],
+      ["/technology", "tecnología"],
+      ["/business",   "economía"],
+      ["/politics",   "política"],
+      ["/health",     "salud"]
     ]
   },
   {
@@ -23,12 +22,11 @@
     "end-url": "/rss",
     "keyword": "content__article-body",
     "topic-list": [
-      "/world",
-      "/technology",
-      "/business",
-      "/football",
-      "/football/liverpool",
-      "/culture"
+      ["/world",      "internacional"],
+      ["/technology", "tecnología"],
+      ["/business",   "economía"],
+      ["/football",   "fútbol"],
+      ["/culture",    "cultura"]
     ]
   },
   {
@@ -39,11 +37,10 @@
     "end-url": "",
     "keyword": "article-center-text",
     "topic-list": [
-      "&categoryId=680",
-      "&categoryId=678",
-      "&categoryId=674",
-      "&categoryId=656",
-      "&categoryId=655"
+      ["&categoryId=680", "nacional"],
+      ["&categoryId=678", "internacional"],
+      ["&categoryId=674", "política"],
+      ["&categoryId=656", "deportes"]
     ]
   }
 ]
